@@ -1,26 +1,111 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+  HoneyTerra design system.
+  Brand: warm, artisanal eco-brand. Deep botanical green + honey amber on
+  cream paper. The look should feel hand-crafted and editorial — never templated.
+*/
+
+@theme {
+  /* Brand — botanical green (primary) */
+  --color-brand-50: #eef7f2;
+  --color-brand-100: #d3ebde;
+  --color-brand-200: #a6d7be;
+  --color-brand-300: #6fbd97;
+  --color-brand-400: #3a9e72;
+  --color-brand-500: #1c8160;
+  --color-brand-600: #14684e;
+  --color-brand-700: #105341;
+  --color-brand-800: #0e4234;
+  --color-brand-900: #0b362c;
+
+  /* Honey — amber accent */
+  --color-honey-50: #fdf6e9;
+  --color-honey-100: #f9e7c2;
+  --color-honey-200: #f3cf86;
+  --color-honey-300: #edb74f;
+  --color-honey-400: #e8a33d;
+  --color-honey-500: #d98e22;
+  --color-honey-600: #b9711a;
+  --color-honey-700: #95561a;
+  --color-honey-800: #79461b;
+
+  /* Warm neutrals — paper & ink */
+  --color-cream: #fbf6ec;
+  --color-sand: #f4ead6;
+  --color-paper: #fffdf8;
+  --color-ink: #1b211d;
+  --color-ink-soft: #43504a;
+  --color-ink-muted: #76817b;
+  --color-line: #e7ded0;
+
+  /* Semantic aliases */
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-ink);
+
+  /* Typography */
+  --font-display: var(--font-display), "Georgia", serif;
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+
+  /* Radii — soft, organic */
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.75rem;
+  --radius-3xl: 2.5rem;
+
+  /* Shadows — warm-tinted, soft */
+  --shadow-soft: 0 2px 8px -2px rgba(27, 33, 29, 0.08),
+    0 12px 32px -8px rgba(27, 33, 29, 0.1);
+  --shadow-lift: 0 8px 24px -6px rgba(16, 83, 65, 0.18),
+    0 24px 48px -12px rgba(16, 83, 65, 0.12);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-honey-200);
+    color: var(--color-brand-800);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* Subtle honeycomb texture behind hero & section bands */
+  .bg-honeycomb {
+    background-image: url("data:image/svg+xml,%3Csvg width='56' height='100' viewBox='0 0 56 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M28 66L0 50V16l28-16 28 16v34zM28 0l28 16v34L28 66 0 50V16z' fill='none' stroke='%23105341' stroke-opacity='0.05' stroke-width='2'/%3E%3C/svg%3E");
+    background-size: 56px 100px;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .container-page {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 1024px) {
+    .container-page {
+      padding-inline: 2rem;
+    }
+  }
 }
