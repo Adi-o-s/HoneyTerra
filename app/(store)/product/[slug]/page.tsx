@@ -2,13 +2,19 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ChevronRight } from "lucide-react";
-import { getProductBySlug, getProductsByFamily, getAllProducts } from "@/lib/db/queries/catalog";
+import { getProductBySlug, getProductsByFamily } from "@/lib/db/queries/catalog";
 import { ProductDetail } from "@/components/store/product-detail";
 import { ReviewsSection } from "@/components/store/reviews-section";
 import { ProductCard } from "@/components/store/product-card";
 
+// Render product pages on-demand (ISR) instead of all at build time. Building
+// every PDP concurrently exhausted the Supabase pooler's connections and timed
+// out; on-demand keeps the build DB-free and lets admin edits appear via
+// revalidatePath without a redeploy. Pages are cached and refreshed every 5 min.
+export const revalidate = 300;
+
 export async function generateStaticParams() {
-  return (await getAllProducts()).map((p) => ({ slug: p.slug }));
+  return [];
 }
 
 export async function generateMetadata({

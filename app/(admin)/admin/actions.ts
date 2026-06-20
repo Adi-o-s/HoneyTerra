@@ -18,6 +18,18 @@ import {
   type ProductFamilyValue,
 } from "@/lib/db/queries/admin";
 
+/**
+ * Revalidate every storefront surface a product change can touch. Product pages
+ * are ISR (rendered on-demand), so this is what makes admin edits appear without
+ * waiting for the 5-minute refresh or a redeploy.
+ */
+function revalidateStorefront(productId: string) {
+  revalidatePath(`/admin/products/${productId}`);
+  revalidatePath("/product/[slug]", "page");
+  revalidatePath("/shop", "layout");
+  revalidatePath("/");
+}
+
 export async function updateOrderStatusAction(formData: FormData) {
   await requireAdmin();
   const id = String(formData.get("orderId"));
@@ -57,9 +69,8 @@ export async function updateProductAction(formData: FormData) {
       await updateVariantDb(key.slice(6), { stock: Math.round(Number(value)) });
     }
   }
-  revalidatePath(`/admin/products/${id}`);
+  revalidateStorefront(id);
   revalidatePath("/admin/products");
-  revalidatePath("/"); // storefront reflects changes
   redirect("/admin/products?saved=1");
 }
 
@@ -75,9 +86,10 @@ export async function createProductAction(formData: FormData) {
 
 export async function deleteProductAction(formData: FormData) {
   await requireAdmin();
-  await deleteProductDb(String(formData.get("productId")));
+  const productId = String(formData.get("productId"));
+  await deleteProductDb(productId);
+  revalidateStorefront(productId);
   revalidatePath("/admin/products");
-  revalidatePath("/");
   redirect("/admin/products");
 }
 
@@ -90,28 +102,26 @@ export async function addVariantAction(formData: FormData) {
     pricePaise: Math.round(Number(formData.get("price")) * 100),
     stock: Math.round(Number(formData.get("stock")) || 0),
   });
-  revalidatePath(`/admin/products/${productId}`);
+  revalidateStorefront(productId);
 }
 
 export async function deleteVariantAction(formData: FormData) {
   await requireAdmin();
   const productId = String(formData.get("productId"));
   await deleteVariantDb(String(formData.get("variantId")));
-  revalidatePath(`/admin/products/${productId}`);
+  revalidateStorefront(productId);
 }
 
 export async function addImageAction(formData: FormData) {
   await requireAdmin();
   const productId = String(formData.get("productId"));
   await addImageDb(productId, String(formData.get("url")), String(formData.get("alt") ?? ""));
-  revalidatePath(`/admin/products/${productId}`);
-  revalidatePath("/");
+  revalidateStorefront(productId);
 }
 
 export async function deleteImageAction(formData: FormData) {
   await requireAdmin();
   const productId = String(formData.get("productId"));
   await deleteImageDb(String(formData.get("imageId")));
-  revalidatePath(`/admin/products/${productId}`);
-  revalidatePath("/");
+  revalidateStorefront(productId);
 }
