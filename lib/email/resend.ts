@@ -39,7 +39,7 @@ export async function sendOrderConfirmationByNumber(orderNumber: string) {
   <div style="font-family:Arial,Helvetica,sans-serif;background:#fbf6ec;padding:32px">
     <div style="max-width:560px;margin:0 auto;background:#fffdf8;border-radius:16px;overflow:hidden;border:1px solid #e7ded0">
       <div style="background:#105341;padding:24px 32px">
-        <span style="color:#fff;font-size:22px;font-weight:700">honey<span style="color:#edb74f">terra</span></span>
+        <span style="color:#fff;font-size:22px;font-weight:700">Honey<span style="color:#edb74f">Terra</span></span>
       </div>
       <div style="padding:32px">
         <h1 style="margin:0 0 8px;font-size:22px;color:#0e4234">Thank you${order.shippingAddress?.fullName ? ", " + order.shippingAddress.fullName.split(" ")[0] : ""}! Your order is confirmed.</h1>
