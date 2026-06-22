@@ -9,6 +9,14 @@ import { Reveal } from "@/components/store/reveal";
 import { getProductsByFamily } from "@/lib/db/queries/catalog";
 import { ASH_TRAY_CATEGORIES, WRAP_CATEGORIES } from "@/lib/data/categories";
 
+// Render on-demand against the live catalog instead of prerendering at build.
+// The home page reads the DB but (unlike the shop pages) uses no Request-time
+// API, so by default Next would statically prerender it at build and connect to
+// Supabase from the build sandbox — the same build-time DB coupling that broke
+// deploys. Rendering per request keeps the build DB-free and reflects admin
+// edits immediately. (The shop pages are already dynamic via `searchParams`.)
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const ashTrays = await getProductsByFamily("ash-tray");
 
