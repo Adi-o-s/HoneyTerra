@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { Sparkles, Wind, Droplets, ShieldCheck } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
-import { ProductVisual } from "../product-visual";
 
 const PILLS = [
   { icon: Wind, label: "Odour Control" },
@@ -102,7 +101,15 @@ export function Hero() {
             />
           ))}
           <div className="relative aspect-square overflow-hidden rounded-3xl bg-gradient-to-b from-white to-brand-50 shadow-[var(--shadow-lift)]">
-            <ProductVisual src="/products/gel-ashtray/hero.png" family="ash-tray" />
+            <video
+              className="h-full w-full object-cover"
+              src="/products/gel-ashtray/hero.mp4"
+              poster="/products/gel-ashtray/hero.png"
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
           </div>
           <div className="absolute -bottom-5 -left-5 hidden rounded-2xl bg-paper px-5 py-4 shadow-[var(--shadow-lift)] sm:block">
             <p className="font-display text-2xl font-semibold text-brand-700">4.8★</p>
